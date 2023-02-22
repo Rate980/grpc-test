@@ -18,5 +18,5 @@ message HelloResponse{
 
 service TestService{
   rpc Call (T1) returns (T2) {}
-  rpc Hello (HelloRequest) returns (HelloResponse);
+  rpc Greet (HelloRequest) returns (HelloResponse);
 }

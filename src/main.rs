@@ -1,9 +1,10 @@
 mod test {
     tonic::include_proto!("test");
 }
+
 use test::{
     test_service_server::{TestService, TestServiceServer},
-    T1, T2,
+    HelloRequest, HelloResponse, T1, T2,
 };
 use tonic::{transport::Server, Request, Response, Status};
 
@@ -19,23 +20,22 @@ impl TestService for MyTestService {
         let replay = T2 { a: rep as i64 };
         Ok(Response::new(replay))
     }
-    async fn hello(
+    async fn greet(
         &self,
         request: Request<test::HelloRequest>,
     ) -> TonicResponse<test::HelloResponse> {
         let name = request.into_inner().name;
         Ok(Response::new(test::HelloResponse {
-            message: format!("hell {}", name),
+            message: format!("hello {}", name),
         }))
     }
 }
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = "[::1]:50051".parse()?;
     let user = MyTestService::default();
     Server::builder()
-        .add_service(TestServiceServer::new(user))
+        .add_service(TestServiceServer::new(test2))
         .serve(addr)
         .await?;
     Ok(())
