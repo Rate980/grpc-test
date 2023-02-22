@@ -35,7 +35,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = "[::1]:50051".parse()?;
     let user = MyTestService::default();
     Server::builder()
-        .add_service(TestServiceServer::new(test2))
+        .add_service(TestServiceServer::new(user))
         .serve(addr)
         .await?;
     Ok(())
